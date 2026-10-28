@@ -139,142 +139,302 @@ Sur le site de test, tu pourras ensuite enregistrer la palette dans **Site Setti
 
 **N’utilise pas `style-wordpress.css` de l’ancien guide : ce fichier est destiné aux blocs WordPress natifs. Ce guide Elementor n’a pas besoin de CSS personnalisé pour les sections principales.** Le panneau **Custom CSS** d’Elementor Pro n’est donc pas requis.
 
-## 5. Créer le conteneur principal de la page
+## 5. Ajouter la boîte qui va contenir la page
 
-1. Clique sur **+** dans la zone vide et ajoute un **Container**, en choisissant Flexbox si Elementor propose aussi Grid.
-2. Renomme-le « Page SPA » dans Structure.
-3. Dans **Layout**, règle **Direction → Column**, **Content Width → Full Width**, **Width → 100 %**, **Gaps → 0 px**.
-4. Dans **Style → Background → Classic**, choisis `#FAF9F5`.
-5. Dans **Advanced**, règle **Margin** et **Padding** à **0**.
-6. Ajoute toutes les sections suivantes **dans** ce conteneur. Vérifie leur imbrication dans Structure.
+### Ce qu’on cherche à faire
 
-Ce conteneur couvre le contenu Elementor ; il ne change pas automatiquement l’en-tête et le pied de page conservés par le thème.
+Pour l’instant, on ajoute **un seul élément : `Container`**. Il sera vide au début, et c’est normal.
 
-### La structure qui sera répétée
+Un **Container** est une boîte invisible dans laquelle tu ranges les éléments de la page. Un **Heading** affiche un titre, un **Text Editor** affiche du texte, un **Image** affiche une photo, un **Button** affiche un bouton. Ces éléments se placent **dans** les boîtes.
 
-Chaque grande section aura deux niveaux :
+Les noms « Page SPA », « Section Accueil » et « Texte accueil » sont des étiquettes que nous donnerons aux boîtes pour nous repérer. **Ce ne sont pas des widgets à rechercher.** Chaque fois que le guide te demande de créer une de ces boîtes, l’élément à ajouter est **Container**.
+
+### 5.1 — Afficher les éléments disponibles
+
+1. Tu dois être dans ta page, ouverte avec **Edit with Elementor**.
+2. À gauche, tu dois voir une liste d’éléments comme **Heading**, **Image** et **Text Editor**, avec un champ de recherche.
+3. Si tu vois à la place les réglages d’un élément, clique sur **Add Element** pour revenir à la liste. Selon la version, ce bouton est représenté par **+** dans la barre supérieure ou une petite grille dans le panneau.
+4. Dans la recherche, saisis `Container`.
+
+### 5.2 — Ajouter le premier Container
+
+1. Fais glisser **Container** depuis la liste de gauche vers la grande zone vide de la page à droite.
+2. Relâche quand Elementor indique l’emplacement de dépôt.
+3. Si Elementor te demande **Flexbox** ou **Grid**, choisis **Flexbox**. Si ce choix n’apparaît pas, continue.
+4. Tu dois maintenant voir une zone vide entourée d’un cadre lorsque tu la sélectionnes.
+
+**Autre chemin possible :** le **+** de la zone vide peut proposer directement **Flexbox**, puis une structure. Dans ce cas, choisis une structure simple à **un seul conteneur**. Utilise l’un de ces deux chemins ; il ne faut pas créer deux conteneurs à cette étape.
+
+### 5.3 — Donner un nom à cette boîte
+
+1. Fais un clic droit sur la poignée du conteneur et cherche **Structure** ou **Navigator**. Tu peux aussi ouvrir ce panneau avec son icône dans la barre d’Elementor.
+2. Dans ce panneau, tu dois voir une ligne **Container**.
+3. Double-clique sur son nom pour le renommer `Page SPA`. Selon la version, tu peux aussi trouver **Rename** dans le menu du clic droit.
+4. Clique sur la ligne `Page SPA` pour sélectionner cette boîte.
+
+**Structure** sert de plan de la page. Cliquer sur une ligne sélectionne l’élément correspondant, même s’il est difficile à attraper dans l’aperçu.
+
+### 5.4 — Régler la boîte Page SPA
+
+Vérifie que le panneau de réglages indique **Edit Container**, et non **Edit Heading** ou **Edit Image**.
+
+1. Dans **Layout**, choisis **Direction → Column**. Si tu vois des flèches, survole-les pour lire leur nom : **Column** correspond à l’empilement vertical.
+2. Règle **Content Width → Full Width**.
+3. Si un réglage distinct **Width** est disponible, mets-le à **100 %**. Vérifie bien l’unité **%**, pas **px**.
+4. Dans **Gaps**, mets **0**. Si deux champs **Column** et **Row** apparaissent, mets les deux à **0**.
+5. Dans **Advanced**, trouve **Margin** et mets les quatre côtés à **0**. Fais la même chose pour **Padding**.
+6. Dans **Style → Background**, choisis le type **Classic** (souvent une icône de pinceau), puis dans **Color**, colle `#FAF9F5`.
+7. Enregistre avec **Save Draft**.
+
+**Résultat attendu :** une seule boîte vide nommée `Page SPA`, avec un fond blanc cassé. Tu n’as encore ajouté ni titre, ni photo, ni bouton. C’est tout ce qu’il fallait faire dans la partie 5.
+
+```text
+Page SPA                 ← élément Container
+```
+
+**Si tu n’arrives pas à ce résultat, arrête-toi ici et envoie une capture de l’éditeur avec le panneau Structure ouvert.** Il n’est pas nécessaire d’essayer la suite avant d’avoir cette première boîte.
+
+## 6. Remplir le haut de page, un élément à la fois
+
+### Ce que tu vas ajouter
+
+On va construire le texte à gauche et la photo à droite. Voici les vrais éléments à rechercher dans Elementor :
+
+| Ce qu’on veut afficher ou organiser | Élément à ajouter |
+|---|---|
+| Les boîtes qui organisent la page | **Container** |
+| « REFUGE SPA D’OYONNAX » | **Text Editor** |
+| « Une rencontre peut tout changer. » | **Heading** |
+| Les deux phrases sous le titre | **Text Editor** |
+| « Trouver mon compagnon » | **Button** |
+| « Découvrir le refuge » | **Button** |
+| La photo du chien | **Image** |
+
+**Règle de dépôt :** fais glisser l’élément depuis la liste de gauche jusqu’à **l’intérieur de la boîte indiquée**. La surbrillance ou la ligne d’insertion montre l’endroit où il sera ajouté. Ensuite, vérifie dans **Structure** que sa ligne est décalée vers la droite sous la bonne boîte. Si l’emplacement est incorrect, déplace sa ligne dans **Structure** ; pas besoin de tout recommencer.
+
+### 6.1 — Ajouter la boîte du haut de page
+
+**À ajouter : Container. À déposer dans : Page SPA. Nom à lui donner : Section Accueil.**
+
+1. Retourne dans **Add Element**, cherche `Container` et fais-le glisser **dans Page SPA**.
+2. Renomme ce nouveau conteneur `Section Accueil` dans **Structure**.
+3. Sélectionne `Section Accueil` et règle **Layout → Direction → Column**, puis **Content Width → Full Width**.
+4. Dans **Advanced → Padding**, désactive la chaîne pour saisir des valeurs différentes :
+
+| Champ | Valeur en px |
+|---|---|
+| Top | 64 |
+| Right | 24 |
+| Bottom | 64 |
+| Left | 24 |
+
+Ce réglage laisse de l’air autour du texte et de la photo. Laisse **Margin** à 0.
+
+**Vérifie la structure :**
 
 ```text
 Page SPA
-  Section Accueil — fond et espace autour
-    Intérieur Accueil — contenu limité à 1 200 px
-      Texte
-      Photo
-  Section Animaux
-    Intérieur Animaux
-      Titres
-      Rangée de cartes
+  Section Accueil
 ```
 
-Le conteneur **extérieur** prend toute la largeur et reçoit le fond coloré. Le conteneur **intérieur** évite que le contenu s’étale sur les très grands écrans.
+### 6.2 — Ajouter la boîte qui réunira le texte et la photo
 
-Pour les sections, utilise ces réglages de base :
+**À ajouter : Container. À déposer dans : Section Accueil. Nom : Intérieur Accueil.**
 
-| Réglage | Conteneur extérieur | Conteneur intérieur |
-|---|---|---|
-| Direction | Column | Column, sauf quand on indique Row |
-| Content Width | Full Width | Boxed |
-| Width | 100 % | 100 %, contenu Boxed limité à 1 200 px |
-| Padding — Desktop | 64 px haut/bas, 24 px gauche/droite | 0 |
-| Padding — Mobile | 36 px haut/bas, 20 px gauche/droite | 0 |
-| Margin | 0 | 0 |
-| Gaps | 0 | 24 px |
+1. Ajoute encore un **Container**, cette fois **dans Section Accueil**.
+2. Renomme-le `Intérieur Accueil`.
+3. Dans **Layout**, règle **Content Width → Boxed** et la largeur du contenu encadré à **1200 px**. Cette limite empêche le texte et la photo de trop s’éloigner sur un grand écran.
+4. Règle **Direction → Row** : c’est ce qui placera les deux boîtes suivantes côte à côte.
+5. Règle **Justify Content → Space Between** et **Align Items → Center**.
+6. Mets **Gaps → 24 px**. Si deux champs apparaissent, tu peux mettre 24 dans les deux.
+7. Dans **Advanced**, mets **Padding** et **Margin** à 0.
 
-Ces valeurs se renseignent dans **Layout** et **Advanced**. Le champ « 1 200 px » correspond à la largeur du contenu encadré, pas à une largeur fixe du conteneur sur téléphone.
+**Vérifie la structure :**
 
-## 6. Construire l’accueil : le premier vrai exercice
-
-### A. Les deux colonnes
-
-1. Dans « Page SPA », crée « Section Accueil », avec les réglages extérieurs du tableau précédent.
-2. Ajoute dedans « Intérieur Accueil », avec les réglages intérieurs.
-3. Passe « Intérieur Accueil » avec **Direction → Row**.
-4. Règle **Justify Content → Space Between** et **Align Items → Center**. **Gaps** : **24 px**.
-5. Ajoute deux conteneurs enfants : « Texte accueil » et « Photo accueil ».
-6. Pour chacun : **Direction → Column**, **Width → 48 %**, **Padding → 0**. Pour « Texte accueil », **Gaps → 20 px**.
-
-### B. Le petit texte au-dessus du titre
-
-Dans « Texte accueil », glisse le widget **Text Editor**.
-
-- Dans **Content**, saisis « REFUGE SPA D’OYONNAX » dans l’éditeur de texte.
-- **Text Color** : `#183D55`.
-- **Typography → Family** : DM Sans ; **Size** : 12 px ; **Weight** : 600 ; **Letter Spacing** : 1.5 px.
-- **Alignment → Left**.
-
-Si le widget ajoute beaucoup d’espace sous le paragraphe, vérifie la marge du widget et l’espacement des paragraphes proposé par ta version.
-
-### C. Le grand titre
-
-Ajoute le widget **Heading**.
-
-- **Title** : « Une rencontre peut tout changer. ».
-- **HTML Tag → H1**.
-- **Text Color** : `#183D55`.
-- **Typography → Family** : Playfair Display.
-- En mode **Desktop** : **Size → 76 px**, **Weight → 500**, **Line Height → 1.05 em**, **Letter Spacing → −2 px**.
-
-Pour des retours à la ligne proches de la maquette, le champ **Title** du widget **Heading** accepte généralement un balisage simple :
-
-```html
-Une rencontre<br>peut <em>tout</em><br>changer.
+```text
+Page SPA
+  Section Accueil
+    Intérieur Accueil
 ```
 
-`<br>` crée un retour à la ligne, `<em>` met le mot en italique. Il n’est pas nécessaire de comprendre davantage de HTML à ce stade. Si ta version affiche le code tel quel, conserve le texte simple et les retours automatiques.
+Tu vois toujours surtout des zones vides : on prépare leurs emplacements avant d’ajouter le contenu.
 
-Le bleu limité à un mot est un détail de finition : garde d’abord le titre entier en bleu foncé. Cela ne bloque pas la construction. On pourra ensuite appliquer une couleur au mot avec un balisage ciblé adapté à ton éditeur.
+### 6.3 — Ajouter les deux boîtes côte à côte
 
-### D. Le texte de présentation
+**À ajouter : deux éléments Container. À déposer tous les deux dans : Intérieur Accueil.**
 
-Ajoute un widget **Text Editor** :
+1. Ajoute un **Container dans Intérieur Accueil**, puis nomme-le `Texte accueil`.
+2. Sélectionne `Texte accueil`. Dans **Layout**, règle **Content Width → Full Width**, **Width → 48 %**, **Direction → Column**, **Gaps → 20 px**. Dans **Advanced**, mets **Padding** à 0.
+3. Ajoute un **deuxième Container dans Intérieur Accueil**, puis nomme-le `Photo accueil`.
+4. Pour `Photo accueil`, règle **Content Width → Full Width**, **Width → 48 %**, **Direction → Column** et **Padding → 0**.
+
+Le réglage **Width** peut se présenter différemment suivant la version ; choisis l’unité **%**. Si tu ne le trouves pas, envoie une capture du panneau **Layout** du conteneur concerné.
+
+**Important : Photo accueil doit être au même niveau que Texte accueil, pas à l’intérieur de Texte accueil.**
+
+```text
+Page SPA
+  Section Accueil
+    Intérieur Accueil
+      Texte accueil
+      Photo accueil
+```
+
+**Résultat attendu :** deux emplacements vides côte à côte. La boîte de gauche accueillera plusieurs widgets ; celle de droite accueillera une seule image.
+
+### 6.4 — Mettre le petit texte dans la boîte de gauche
+
+**Widget à ajouter : Text Editor. À déposer dans : Texte accueil.**
+
+1. Dans **Add Element**, recherche `Text Editor`.
+2. Fais glisser **Text Editor** dans la boîte `Texte accueil`.
+3. Le panneau doit maintenant afficher **Edit Text Editor**.
+4. Dans **Content**, remplace le texte d’exemple par `REFUGE SPA D’OYONNAX`.
+5. Dans **Style**, règle **Text Color → #183D55**.
+6. Ouvre **Typography** avec le crayon : **Family → DM Sans**, **Size → 12 px**, **Weight → 600**, **Letter Spacing → 1.5 px**.
+
+Si la police n’est pas disponible, garde temporairement Arial. Tu dois maintenant voir le petit texte dans la partie gauche.
+
+### 6.5 — Ajouter le grand titre juste en dessous
+
+**Widget à ajouter : Heading. À déposer dans : Texte accueil, sous le Text Editor précédent.**
+
+1. Reviens à **Add Element** et recherche `Heading`.
+2. Glisse **Heading** sous « REFUGE SPA D’OYONNAX », en restant à l’intérieur de `Texte accueil`.
+3. Vérifie que le panneau affiche **Edit Heading**.
+4. Dans **Content → Title**, saisis `Une rencontre peut tout changer.`.
+5. Dans **Content → HTML Tag**, choisis **H1**.
+6. Dans **Style → Text Color**, colle `#183D55`.
+7. Dans **Style → Typography**, règle **Family → Playfair Display**, **Size → 76 px**, **Weight → 500**, **Line Height → 1.05 em** et **Letter Spacing → -2 px**.
+
+Si la police manque, utilise Georgia. Pour l’instant, laisse Elementor faire les retours à la ligne automatiquement. Le mot en italique et les retours exacts de la maquette viendront après.
+
+### 6.6 — Ajouter les phrases sous le titre
+
+**Widget à ajouter : Text Editor. À déposer dans : Texte accueil, sous le Heading.**
+
+1. Ajoute un **nouveau Text Editor** sous le grand titre.
+2. Dans **Content**, remplace le texte d’exemple par :
 
 > Pour eux, une nouvelle vie.  
 > Pour vous, une histoire qui commence.
 
-Dans **Style → Typography** : **Family → DM Sans**, **Size → 18 px**, **Line Height → 1.7 em** ; **Text Color** : `#586D79`.
+3. Dans **Style**, mets **Text Color → #586D79**.
+4. Dans **Typography**, mets **Family → DM Sans**, **Size → 18 px**, **Line Height → 1.7 em**.
 
-### E. Les deux boutons
+**Vérifie la structure :**
 
-1. Ajoute un conteneur « Boutons accueil » dans « Texte accueil ».
-2. **Direction → Row**, **Gaps → 16 px**, **Wrap → Wrap** si nécessaire, **Padding → 0**.
-3. Ajoute un widget **Button**.
-4. **Text** : « Trouver mon compagnon » ; **Link** : `#animaux`.
-5. Dans **Style** : **Text Color** blanc, **Background Color** `#207AAD`, **Typography → Family** DM Sans, **Size** 15 px, **Weight** 600, **Border Radius** 5 px.
-6. **Padding** du bouton : **16 px haut/bas, 22 px gauche/droite**. Ce réglage se trouve généralement dans le Style du bouton.
-7. Dans l’état **Hover**, fond `#155A82`, texte blanc.
-8. Duplique le bouton par clic droit → **Duplicate**.
-9. Sur la copie : **Text** « Découvrir le refuge », **Link** `#refuge`, **Background Color** transparent, **Text Color** `#207AAD`, **Border Type → Solid**, **Width → 1 px** et **Color** `#207AAD` pour la bordure.
+```text
+Texte accueil
+  Text Editor            ← REFUGE SPA D’OYONNAX
+  Heading                ← Une rencontre peut tout changer.
+  Text Editor            ← Pour eux, une nouvelle vie…
+```
 
-Les liens qui commencent par `#` feront défiler la page jusqu’à une section dont on définira l’identifiant plus loin.
+### 6.7 — Préparer la rangée des deux boutons
 
-### F. La grande photo
+**À ajouter : Container. À déposer dans : Texte accueil, sous le dernier Text Editor. Nom : Boutons accueil.**
 
-1. Dans « Photo accueil », ajoute un widget **Image**.
-2. Choisis ta photo dans la médiathèque ; utilise une résolution assez grande, par exemple **Large** ou **Full** selon le fichier.
-3. Dans **Style** : **Width → 100 %**, **Height → 560 px** en mode **Desktop**.
-4. **Object Fit → Cover**, si ce réglage est proposé.
-5. **Object Position** : commence par **Center Center** ; adapte pour garder le visage de l’animal visible.
-6. **Border Radius** : délie les valeurs et règle **100 / 8 / 8 / 8 px**, dans l’ordre **Top Left / Top Right / Bottom Right / Bottom Left** (haut gauche / haut droit / bas droit / bas gauche).
-7. Dans **Content**, règle **Link → None**, si tu ne souhaites pas ouvrir une visionneuse au clic.
+1. Ajoute un **Container** sous le texte de présentation, toujours dans `Texte accueil`.
+2. Renomme-le `Boutons accueil`.
+3. Dans **Layout**, règle **Content Width → Full Width**, **Direction → Row**, **Gaps → 16 px** et **Wrap → Wrap**.
+4. Dans **Advanced**, mets **Padding** à 0.
 
-**Cover** recadre la photo pour remplir la zone sans la déformer. Si le réglage n’est pas disponible, prépare un recadrage portrait dans la médiathèque et conserve une hauteur automatique ; n’étire pas manuellement la photo.
+Cette petite boîte sert uniquement à mettre les deux boutons côte à côte. **Ce n’est pas encore un bouton : tu dois maintenant y ajouter les widgets Button.**
 
-### G. Vérifier immédiatement sur mobile
+### 6.8 — Ajouter le premier bouton
 
-Dans la barre de l’éditeur, utilise les icônes **Desktop / Tablet / Mobile**. Certains réglages ont aussi leur propre icône d’appareil : elle indique qu’ils peuvent avoir une valeur différente selon l’écran.
+**Widget à ajouter : Button. À déposer dans : Boutons accueil.**
 
-En mode **Mobile** :
+1. Dans **Add Element**, recherche `Button` et glisse-le dans `Boutons accueil`.
+2. Dans **Content → Text**, écris `Trouver mon compagnon`.
+3. Dans **Content → Link**, écris `#animaux`.
+4. Dans **Style**, sur l’état **Normal**, mets **Text Color → #FFFFFF** et **Background Color → #207AAD**. Selon la version, le fond apparaît sous **Background Type → Classic → Color**.
+5. Dans **Typography** : **Family → DM Sans**, **Size → 15 px**, **Weight → 600**.
+6. Mets **Border Radius → 5 px** pour les quatre coins.
+7. Dans le **Padding du bouton**, mets **Top / Bottom → 16 px** et **Right / Left → 22 px**.
+8. Passe dans **Hover** et règle le fond sur `#155A82`, avec le texte toujours blanc.
 
-- « Intérieur Accueil » : **Direction → Column**.
-- « Texte accueil » et « Photo accueil » : **Width → 100 %**.
-- Widget **Heading** : **Size → 46 px**, **Line Height → 1.08 em**, **Letter Spacing → −1 px**.
-- Widget **Text Editor** : **Size → 16 px**.
-- Widget **Image** : **Height → 380 px**, **Border Radius** du coin haut gauche à 70 px.
-- Boutons : autorise le retour à la ligne, ou passe leur conteneur avec **Direction → Column**.
+Le lien `#animaux` ne mènera à une section qu’après sa création dans la partie 8. Pour le moment, c’est normal qu’il ne fasse pas défiler la page.
 
-En mode **Tablet**, si l’accueil est trop serré, règle aussi **Direction → Column**, **Width → 100 %**, avec **Size → 60 px** pour le titre. Règle explicitement les appareils nécessaires : certaines valeurs tablette peuvent être héritées sur mobile.
+### 6.9 — Ajouter le deuxième bouton
 
-Utilise **Save Draft**, puis **Preview Changes**. **Tu peux t’arrêter ici pour la première séance.**
+**Widget à ajouter : Button, en dupliquant le premier. Il reste dans : Boutons accueil.**
+
+1. Fais clic droit sur le premier bouton → **Duplicate**.
+2. Sélectionne la copie, puis mets **Content → Text → Découvrir le refuge**.
+3. Mets **Content → Link → #refuge**.
+4. Dans **Style → Normal**, choisis un fond transparent et **Text Color → #207AAD**.
+5. Choisis **Border Type → Solid**, largeur de bordure **1 px** et couleur `#207AAD`.
+6. Dans **Hover**, choisis un fond `#EAF3F8` et **Text Color → #207AAD**. La copie a hérité des réglages au survol du premier bouton : il faut donc les ajuster aussi.
+
+**Résultat attendu :** sous le texte de présentation, un bouton bleu et un bouton à contour bleu. Ils peuvent passer sur deux lignes si la place manque.
+
+### 6.10 — Ajouter la photo dans la boîte de droite
+
+**Widget à ajouter : Image. À déposer dans : Photo accueil.**
+
+1. Dans **Add Element**, recherche `Image` et glisse-le dans `Photo accueil`.
+2. Le panneau doit afficher **Edit Image**.
+3. Dans **Content**, clique sur l’emplacement de l’image ou sur **Choose Image**.
+4. Dans la fenêtre qui s’ouvre, utilise **Media Library** pour une photo déjà importée, ou **Upload Files → Select Files** pour prendre une photo sur ton ordinateur.
+5. Sélectionne la photo, renseigne **Alt Text**, puis clique sur **Insert Media** ou **Select**, selon la fenêtre affichée.
+6. Dans **Style**, règle **Width → 100 %**, puis **Height → 560 px**.
+7. Si disponible, règle **Object Fit → Cover** : cela recadre la photo au lieu de l’étirer. Ajuste **Object Position** pour garder la tête de l’animal visible.
+8. Dans **Border Radius**, désactive la chaîne et mets **100 / 8 / 8 / 8 px** pour les coins **Top Left / Top Right / Bottom Right / Bottom Left**.
+9. Dans **Content**, laisse **Link → None**.
+
+Si **Object Fit** n’est pas disponible, garde une hauteur automatique et une photo déjà recadrée en portrait. Ne force pas une hauteur qui déforme l’animal.
+
+### 6.11 — Vérifier que tout est au bon endroit
+
+Voici le plan complet du haut de page. Le nom entre parenthèses est **le vrai élément Elementor** ; les noms français servent à te repérer.
+
+```text
+Page SPA (Container)
+  Section Accueil (Container)
+    Intérieur Accueil (Container)
+      Texte accueil (Container)
+        Text Editor — REFUGE SPA D’OYONNAX
+        Heading — Une rencontre peut tout changer.
+        Text Editor — Pour eux, une nouvelle vie…
+        Boutons accueil (Container)
+          Button — Trouver mon compagnon
+          Button — Découvrir le refuge
+      Photo accueil (Container)
+        Image — photo du chien
+```
+
+Clique sur **Save Draft**, puis sur **Preview Changes**.
+
+**Résultat attendu sur ordinateur :** les textes et les deux boutons à gauche, une grande photo arrondie à droite. Si tu obtiens cela, la structure principale est réussie. Les détails décoratifs peuvent attendre.
+
+### 6.12 — Adapter au téléphone
+
+1. Clique sur le mode **Mobile** dans la barre d’Elementor.
+2. Dans **Structure**, sélectionne `Intérieur Accueil`. Règle **Layout → Direction → Column**.
+3. Sélectionne `Texte accueil`, puis règle **Width → 100 %**. Fais la même chose pour `Photo accueil`.
+4. Sélectionne `Section Accueil`. Dans **Advanced → Padding**, mets **Top / Bottom → 36 px** et **Right / Left → 20 px**.
+5. Sélectionne le widget **Heading**. Dans **Style → Typography**, mets **Size → 46 px**, **Line Height → 1.08 em** et **Letter Spacing → -1 px**.
+6. Sélectionne le **Text Editor** des phrases de présentation, puis mets **Size → 16 px**.
+7. Sélectionne le widget **Image**, puis mets **Height → 380 px**. Tu peux réduire l’arrondi du coin haut gauche à **70 px**.
+8. Si les boutons sont trop serrés, sélectionne `Boutons accueil` et passe **Direction → Column**.
+9. Reviens en mode **Desktop** pour vérifier que le texte et la photo y restent côte à côte.
+
+Les propriétés accompagnées d’une icône d’appareil peuvent avoir une valeur par écran. Si une modification mobile change aussi l’ordinateur, vérifie l’icône d’appareil du réglage avant de continuer.
+
+En mode **Tablet**, si les colonnes sont trop serrées, règle aussi `Intérieur Accueil` sur **Column**, ses deux enfants sur **Width → 100 %**, et le titre sur **Size → 60 px**. Recontrôle ensuite le mode Mobile, qui peut hériter de valeurs Tablet.
+
+**Enregistre. Tu peux maintenant t’arrêter et comparer cette première section à la maquette avant de construire la suite.**
+
+### Pour comprendre les sections suivantes
+
+Quand la suite du guide demande une « section standard », il s’agit de **deux éléments Container** :
+
+- Le premier, placé **dans Page SPA**, est la boîte extérieure : **Content Width → Full Width**, **Direction → Column**, **Padding → 64 px haut/bas et 24 px gauche/droite** sur ordinateur.
+- Le second est placé **dans le premier** : **Content Width → Boxed**, contenu limité à **1200 px**, **Direction → Column**, **Gaps → 24 px**, **Padding → 0**. C’est dans ce second conteneur que tu ajoutes les widgets de la section.
+
+Sur mobile, réduis le padding de la boîte extérieure à **36 px haut/bas et 20 px gauche/droite**. Les sections suivantes sont ajoutées **après Section Accueil, au même niveau dans Page SPA**, pas à l’intérieur de la boîte du texte ou de la photo.
 
 ## 7. Ajouter la bande bleu pâle
 
