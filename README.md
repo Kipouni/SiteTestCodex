@@ -8,7 +8,7 @@ python3 -m http.server 8000 --bind 0.0.0.0
 
 ## Direction visuelle
 
-Crème `#f9f7f0`, vert forêt `#263f32`, terracotta `#c45e37`, accents miel. Titres Playfair Display et texte DM Sans (Google Fonts, avec alternatives Georgia et Arial sans réseau). Composition éditoriale, photographies généreuses, illustrations douces et appels à l’action sobres. Interface responsive, filtres d’animaux, fiches modales, navigation mobile et prise en charge du mouvement réduit.
+Palette inspirée du logo transmis : bleu SPA approché `#207aad`, bleu profond `#155a82`, encre `#183d55`, blanc cassé `#faf9f5`, bleu très pâle `#eaf3f8`. Le bleu est une approximation visuelle du logo, pas une référence de charte officielle. Les tons chauds des photographies et illustrations préservent une ambiance accueillante. Titres Playfair Display et texte DM Sans (Google Fonts, avec alternatives Georgia et Arial sans réseau). Composition éditoriale, photographies généreuses, illustrations douces et appels à l’action sobres. Interface responsive, filtres d’animaux, fiches modales, navigation mobile et prise en charge du mouvement réduit.
 
 ## Adapter à WordPress
 
