@@ -450,6 +450,8 @@ Les petits symboles décoratifs de la maquette sont facultatifs. Si tu en ajoute
 
 ## 8. Construire la section des animaux
 
+> Les cartes manuelles ci-dessous servent à apprendre la mise en page. Pour gérer régulièrement les animaux, il faudra les remplacer par une liste dynamique utilisant les fiches existantes du site. Consulte [le guide de gestion et de passage à WooCommerce](GESTION-ANIMAUX.md) avant de reproduire manuellement toutes les fiches.
+
 ### A. La section et son titre
 
 1. Ajoute une section standard et son intérieur, nommé « Intérieur Animaux ».

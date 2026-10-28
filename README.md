@@ -28,7 +28,7 @@ Ouvrir `index.html`, puis cliquer sur **Adopter**, ou ouvrir directement `animau
 
 - **animaux.html** : catalogue de sept animaux fictifs, filtres combinables (espèce, âge, sexe), recherche par prénom ou caractère, tri et coups de cœur. Les critères figurent dans l’URL et restent appliqués après rechargement.
 - **animal.html?id=oscar** : exemple de fiche individuelle, avec histoire, besoins, environnement souhaité, ententes à discuter et préparation d’une rencontre. Les autres fiches sont accessibles depuis le catalogue.
-- **animals-data.js** : données de démonstration partagées par le catalogue et les fiches.
+- **animals-data.js** : fiches de départ ; **animal-store.js** : base locale partagée par le catalogue, les fiches, l’accueil et la gestion.
 - Les coups de cœur sont enregistrés dans le navigateur quand son stockage local est disponible ; ils ne sont pas envoyés au refuge. Le comportement du stockage pour des fichiers ouverts directement peut varier selon le navigateur.
 - Les images sont incluses dans `assets/`. Les portraits du catalogue sont générés, les animaux sont fictifs et les liens de contact conduisent au site officiel. Aucun formulaire d’adoption n’est transmis.
 
@@ -37,3 +37,13 @@ Ouvrir `index.html`, puis cliquer sur **Adopter**, ou ouvrir directement `animau
 ### Vérification de développement
 
 Le site n’a aucune dépendance à installer pour être utilisé. Pour les contrôles automatiques facultatifs, `tests/browser.cjs` utilise Playwright installé dans l’environnement et Chromium (`CHROMIUM_PATH` permet de choisir un autre exécutable). Exécuter `node tests/browser.cjs` : filtres combinés, recherche, tri, favoris, rechargement, fiches, navigation et largeurs 320 / 390 / 768 / 1440 px. Le script démarre et ferme son propre serveur HTTP local. Aucun contact avec le site du refuge n’est nécessaire.
+
+## Gestion sans code
+
+Ouvrir **Gestion de la maquette** dans le pied de page, ou `gestion.html`. Ajout de photo et de fiche, modification, statuts disponible/adopté/archivé, choix des trois cartes et de la grande photo d’accueil, export/import de sauvegarde. Le catalogue, les fiches et l’accueil utilisent la même base.
+
+**Cette gestion est locale au navigateur (IndexedDB), sans authentification ni publication serveur.** Utiliser une adresse HTTP locale stable pour partager les données entre pages. Exporter régulièrement une sauvegarde JSON ; une autre personne ne reçoit pas automatiquement les modifications.
+
+[Mode d’emploi et passage à WordPress / WooCommerce](wordpress/GESTION-ANIMAUX.md). Les changements effectués dans la gestion ne modifient pas les fichiers GitHub. Les portraits de départ restent dans `animals-data.js`, utilisés uniquement comme données initiales lorsque le navigateur n’a pas encore de catalogue enregistré.
+
+[Aperçu de la gestion](apercus/gestion.png) · [Aperçu du formulaire](apercus/edition-animal.png)

@@ -20,7 +20,9 @@ const server = http.createServer(async (req, res) => {
     await new Promise(resolve => server.listen(0,'127.0.0.1',resolve));
     const base = `http://127.0.0.1:${server.address().port}`;
     browser = await chromium.launch({executablePath:process.env.CHROMIUM_PATH || '/usr/bin/chromium',headless:true,args:['--no-sandbox']});
-    const page = await browser.newPage({viewport:{width:1440,height:1000}});
+    const context = await browser.newContext({viewport:{width:1440,height:1000}});
+    await context.route('https://**',route=>route.abort());
+    const page = await context.newPage();
     page.setDefaultTimeout(8000);
     const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.error('PAGE ERROR:',e.message);});
     await page.route('https://**',route=>route.abort());
@@ -66,7 +68,7 @@ const server = http.createServer(async (req, res) => {
     assert.match(await page.locator('h1').innerText(),/introuvable/);
     for(const id of ['milo','plume','oscar','luna','nala','simba','rio']) {
       await page.goto(base+'/animal.html?id='+id);
-      assert.equal(await page.locator('.profile-photo img').evaluate(img=>img.complete && img.naturalWidth>0),true);
+      await page.waitForFunction(()=>{const img=document.querySelector('.profile-photo img');return img?.complete && img.naturalWidth>0;});
       assert.equal(await page.locator('.related-card').count(),2);
     }
     for (const width of [1440,768,390,320]) {
@@ -87,6 +89,121 @@ const server = http.createServer(async (req, res) => {
     await page.screenshot({path:'/tmp/animals-desktop.png',fullPage:true});
     await page.goto(base+'/animal.html?id=oscar');
     await page.screenshot({path:'/tmp/oscar-desktop.png',fullPage:true});
+    // Gestion : ajout avec photo, mise à jour unique, accueil, archivage et sauvegarde.
+    await page.goto(base+'/gestion.html');
+    await page.locator('.managed-card').first().waitFor();
+    const initial=await page.evaluate(()=>SPA_STORE.snapshot());
+    assert.equal(await page.locator('.managed-card').count(),7);
+    await page.locator('[data-feature="plume"]').uncheck();
+    await page.getByRole('button',{name:'+ Ajouter un animal',exact:true}).click();
+    const editor=page.locator('#animal-form');
+    await editor.locator('[name="name"]').fill('Maya');
+    await editor.locator('[name="species"]').selectOption('chat');
+    await editor.locator('[name="sex"]').selectOption('femelle');
+    await editor.locator('[name="age"]').fill('8');
+    await editor.locator('[name="ageUnit"]').selectOption('mois');
+    await editor.locator('[name="tag"]').fill('La douce exploratrice');
+    await editor.locator('[name="traits"]').fill('Calme, curieuse');
+    await editor.locator('[name="intro"]').fill('Une nouvelle histoire à écrire.');
+    await editor.locator('[name="story"]').fill('Maya aime observer les oiseaux.');
+    await editor.locator('[name="home"]').fill('Un foyer paisible.');
+    await editor.locator('[name="needs"]').fill('Des jeux et de la présence.');
+    await editor.locator('[name="featured"]').check();
+    await editor.locator('[name="photo"]').setInputFiles(path.join(root,'assets/hero-dog.png'));
+    await page.waitForFunction(()=>!document.querySelector('#save-animal').disabled);
+    await page.getByRole('button',{name:'Enregistrer la fiche',exact:true}).click();
+    await page.waitForFunction(()=>!document.querySelector('#editor-dialog').open);
+    const newId=await page.evaluate(()=>SPA_STORE.snapshot().animals.find(a=>a.name==='Maya').id);
+    assert.equal(await page.locator('.managed-card').count(),8);
+    await page.locator('#hero-choice').selectOption(newId);
+    await page.getByRole('button',{name:'Appliquer',exact:true}).click();
+    await page.waitForFunction(id=>SPA_STORE.snapshot().heroId===id,newId);
+    const visitor=await page.context().newPage();
+    await visitor.goto(base+'/index.html');
+    await visitor.locator(`.hero-animal-link[href="animal.html?id=${newId}"]`).waitFor();
+    assert.equal(await visitor.locator(`.animal-card a[href="animal.html?id=${newId}"]`).count(),1);
+    await visitor.goto(base+'/animaux.html');
+    await visitor.locator('.companion-card').first().waitFor();
+    assert.equal(await visitor.locator('.companion-card').count(),8);
+    // Les modifications de texte ne doivent jamais devenir du HTML exécutable.
+    await page.getByRole('button',{name:'Modifier Maya',exact:true}).click();
+    const unsafe='<img src=x onerror="window.injected=1">';
+    await editor.locator('[name="tag"]').fill(unsafe);
+    await page.getByRole('button',{name:'Enregistrer la fiche',exact:true}).click();
+    await page.waitForFunction(()=>!document.querySelector('#editor-dialog').open);
+    await visitor.waitForFunction(text=>[...document.querySelectorAll('.companion-tag')].some(e=>e.textContent===text),unsafe);
+    assert.equal(await visitor.evaluate(()=>window.injected),undefined);
+    assert.equal(await visitor.locator('img[src="x"]').count(),0);
+    await visitor.goto(base+'/animal.html?id='+newId);
+    await visitor.locator('#profile-name').waitFor();
+    assert.match(await visitor.locator('#profile-name').innerText(),/Maya/);
+    assert.match(await visitor.locator('.profile-facts').innerText(),/8 mois/);
+    const row=page.locator('.managed-card').filter({has:page.getByRole('heading',{name:'Maya',exact:true})});
+    await row.getByRole('button',{name:'Marquer adopté',exact:true}).click();
+    await visitor.waitForFunction(()=>document.querySelector('.profile-missing'));
+    await visitor.goto(base+'/index.html');
+    await visitor.locator('.hero-animal-link').waitFor();
+    assert.notEqual(await visitor.locator('.hero-animal-link').getAttribute('href'),'animal.html?id='+newId);
+    assert.equal(await visitor.locator(`.animal-card a[href="animal.html?id=${newId}"]`).count(),0);
+    await row.getByRole('button',{name:'Remettre disponible',exact:true}).click();
+    await page.waitForFunction(id=>SPA_ANIMALS.some(a=>a.id===id),newId);
+    const downloadPromise=page.waitForEvent('download');
+    await page.getByRole('button',{name:'Exporter la sauvegarde',exact:true}).click();
+    const download=await downloadPromise;
+    const backup=JSON.parse(await fs.readFile(await download.path(),'utf8'));
+    assert.equal(backup.animals.length,8);
+    assert.ok(backup.animals.find(a=>a.id===newId).image.startsWith('data:image/jpeg;base64,'));
+    await row.getByRole('button',{name:'Archiver',exact:true}).click();
+    await page.waitForFunction(id=>!SPA_ANIMALS.some(a=>a.id===id),newId);
+    await page.reload();await page.locator('.managed-card').first().waitFor();
+    assert.equal(await page.evaluate(id=>SPA_STORE.snapshot().animals.find(a=>a.id===id).status,newId),'archive');
+    const upload=async obj=>page.locator('#import-data').setInputFiles({name:'sauvegarde.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(obj))});
+    const invalid=structuredClone(backup);invalid.animals[0].image='javascript:alert(1)';
+    await upload(invalid);
+    await page.waitForFunction(()=>document.querySelector('#management-message').textContent.includes('Import refusé'));
+    assert.equal(await page.locator('#import-dialog').evaluate(d=>d.open),false);
+    await upload(backup);await page.locator('#import-dialog').waitFor();
+    await page.getByRole('button',{name:'Annuler',exact:true}).click();
+    assert.equal(await page.evaluate(id=>SPA_STORE.snapshot().animals.find(a=>a.id===id).status,newId),'archive');
+    await upload(backup);await page.locator('#import-dialog').waitFor();
+    await page.getByRole('button',{name:'Remplacer le catalogue',exact:true}).click();
+    await page.waitForFunction(()=>!document.querySelector('#import-dialog').open);
+    assert.equal(await page.evaluate(id=>SPA_STORE.snapshot().animals.find(a=>a.id===id).status,newId),'disponible');
+    // Un catalogue vide ne laisse aucun ancien animal dans l’accueil ou ses liens.
+    await upload({version:1,animals:[],heroId:''});await page.locator('#import-dialog').waitFor();
+    await page.getByRole('button',{name:'Remplacer le catalogue',exact:true}).click();
+    await page.waitForFunction(()=>!document.querySelector('#import-dialog').open);
+    await visitor.goto(base+'/index.html');await visitor.evaluate(()=>SPA_READY);
+    assert.equal(await visitor.locator('.hero-animal-link').count(),0);
+    assert.equal(await visitor.locator('.animal-card').count(),0);
+    await visitor.goto(base+'/animaux.html');await visitor.evaluate(()=>SPA_READY);
+    assert.equal(await visitor.locator('.companion-card').count(),0);
+    assert.equal(await visitor.locator('#empty-results').isVisible(),true);
+    await upload(initial);await page.locator('#import-dialog').waitFor();
+    await page.getByRole('button',{name:'Remplacer le catalogue',exact:true}).click();
+    await page.waitForFunction(()=>!document.querySelector('#import-dialog').open);
+    await page.setViewportSize({width:1440,height:1000});
+    await page.screenshot({path:'/tmp/management-desktop.png',fullPage:true});
+    await page.getByRole('button',{name:'Modifier Milo',exact:true}).click();
+    await page.screenshot({path:'/tmp/management-editor.png',fullPage:true});
+    for(const width of [390,320]){
+      await page.setViewportSize({width,height:844});
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'management overflow');
+      assert.equal(await page.locator('#editor-dialog').evaluate(d=>d.scrollWidth>d.clientWidth),false,'editor overflow');
+    }
+    await page.getByRole('button',{name:'Fermer l’éditeur',exact:true}).click();
+    // Le refus de stockage ne doit pas être présenté comme un enregistrement réussi.
+    const blocked=await browser.newContext();
+    await blocked.addInitScript(()=>Object.defineProperty(window,'indexedDB',{value:{open(){throw Error('stockage désactivé');}}}));
+    const blockedPage=await blocked.newPage();await blockedPage.route('https://**',route=>route.abort());
+    await blockedPage.goto(base+'/gestion.html');await blockedPage.evaluate(()=>SPA_READY);
+    assert.equal(await blockedPage.locator('#add-animal').isDisabled(),true);
+    await blockedPage.goto(base+'/animaux.html');await blockedPage.evaluate(()=>SPA_READY);
+    assert.equal(await blockedPage.locator('.companion-card').count(),7);
+    await blocked.close();await visitor.close();
+    assert.deepEqual(errors,[]);
+    console.log('PASS: editor photo upload, create/edit, HTML escaping, cross-tab updates, homepage synchronization, adopted/archive/restore, export/import validation, empty catalogue, mobile editor, storage denial.');
+
     assert.deepEqual(errors,[]);
     console.log('PASS: navigation, combined filters, search, sort, empty states, saved portraits, reload, all 7 profiles, unknown profile, 4 screen widths, mobile menu, no JavaScript errors.');
   } finally { if(browser) await browser.close(); server.close(); }
