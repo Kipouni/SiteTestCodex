@@ -15,3 +15,7 @@ Palette inspirée du logo transmis : bleu SPA approché `#207aad`, bleu profond 
 Les sections peuvent devenir des groupes de blocs : en-tête, rencontre principale, animaux, présentation, soutien, contact. Les couleurs sont centralisées dans `style.css`. Remplacer les contenus fictifs, illustrations et photo générée par des données et photographies autorisées du refuge avant toute publication. Vérifier les horaires, les modalités d’adoption et les liens officiels. Aucun formulaire ni paiement ne fonctionne dans cette maquette ; les liens de contact renvoient au site officiel.
 
 Cette création est une proposition indépendante, pas une copie ni un audit du site existant, qui n’était pas accessible depuis l’environnement. Les animaux sont fictifs. La photo du chien est générée et les illustrations SVG sont créées pour la maquette.
+
+## Guide WordPress pas à pas
+
+Consultez [le guide pour débuter](wordpress/GUIDE-WORDPRESS.md) et le [CSS dédié aux blocs WordPress](wordpress/style-wordpress.css). Le guide part des blocs natifs ; les réglages précis dépendent du thème et de l’éditeur du site.
