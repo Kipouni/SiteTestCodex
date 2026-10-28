@@ -18,4 +18,6 @@ Cette création est une proposition indépendante, pas une copie ni un audit du 
 
 ## Guide WordPress pas à pas
 
-Consultez [le guide pour débuter](wordpress/GUIDE-WORDPRESS.md) et le [CSS dédié aux blocs WordPress](wordpress/style-wordpress.css). Le guide part des blocs natifs ; les réglages précis dépendent du thème et de l’éditeur du site.
+Consultez **[le guide Elementor gratuit, pas à pas](wordpress/GUIDE-ELEMENTOR.md)** : conteneurs, widgets, couleurs, dimensions et réglages mobile de chaque section. Les sections principales ne nécessitent ni CSS personnalisé ni Elementor Pro. Les réglages de l’en-tête dépendent du thème.
+
+L’ancien [guide des blocs natifs](wordpress/GUIDE-BLOCS-WORDPRESS.md) et son [CSS dédié](wordpress/style-wordpress.css) restent disponibles ; ce CSS ne concerne pas Elementor.
